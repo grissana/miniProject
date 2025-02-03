@@ -37,7 +37,7 @@ section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 30px;
+    padding: 0px 30px; 
     justify-content: center;
 }
 
@@ -67,6 +67,7 @@ h2 {
 }
 
 label {
+    padding: 5px;
     font-size: 20px;
     color: #ccc; /* สีขาวอมเทาสำหรับคำอธิบาย */
 }
