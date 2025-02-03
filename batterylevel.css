@@ -1,0 +1,154 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: #1a1a1a; /* พื้นหลังมืดที่เน้นให้ข้อความและการออกแบบเด่นขึ้น */
+    color: #e0e0e0; /* ข้อความสีอ่อนเพื่อความชัดเจน */
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.header {
+    padding: 20px;
+    margin: 20px;
+    background: linear-gradient(135deg, #6a1b9a, #d500f9); /* โทนสีม่วงสดเพื่อความทันสมัย */
+    text-align: center;
+    font-size: 36px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+}
+
+.header:hover {
+    transform: scale(1.05); /* ขยายขณะ hover */
+}
+
+section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 30px;
+    justify-content: center;
+}
+
+h2 {
+    text-align: center;
+    padding: 10px;
+    font-size: 28px;
+    color: #b2b2b2; /* สีอ่อนสำหรับหัวข้อ */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-bottom: 2px solid #d500f9; /* ขีดเส้นใต้สีม่วง */
+    margin-bottom: 30px;
+}
+
+#mac-address-A, #mac-address-B, #mac-address-C, #mac-address-D, #mac-address-E {
+    font-size: 30px;
+    color: #00bcd4; /* สีฟ้าเทอคอยซ์ที่ดูน่าสนใจ */
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+#battery-level-A, #battery-level-B, #battery-level-C, #battery-level-D, #battery-level-E {
+    font-size: 30px;
+    color: #00bcd4; /* สีฟ้า */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+label {
+    font-size: 20px;
+    color: #ccc; /* สีขาวอมเทาสำหรับคำอธิบาย */
+}
+
+#battery-level-group-boxA,
+#battery-level-group-boxB,
+#battery-level-group-boxC,
+#battery-level-group-boxD,
+#battery-level-group-boxE {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #424242, #616161); /* โทนสีเทาเพื่อเพิ่มความลึก */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+#battery-level-group-boxA:hover,
+#battery-level-group-boxB:hover,
+#battery-level-group-boxC:hover,
+#battery-level-group-boxD:hover,
+#battery-level-group-boxE:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+#battery-level-group-boxA-1,
+#battery-level-group-boxB-1,
+#battery-level-group-boxC-1,
+#battery-level-group-boxD-1,
+#battery-level-group-boxE-1 {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background: #333; /* พื้นหลังที่มืดเพื่อให้เน้นข้อความ */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    font-size: 18px;
+    color: #b0bec5; /* สีฟ้าเทาอ่อนเพื่อความชัดเจน */
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(135deg, #6a1b9a, #d500f9); /* สีม่วงสดในพื้นหลัง */
+    padding: 15px;
+    color: white;
+    box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 100;
+}
+
+footer a {
+    color: #00bcd4; /* สีฟ้าสำหรับลิงก์ */
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    color: #d500f9; /* เปลี่ยนเป็นสีม่วงเข้มเมื่อ hover */
+}
+
+/* เพิ่ม effect ขอบมุมกล่อง */
+#battery-level-group-boxA,
+#battery-level-group-boxB,
+#battery-level-group-boxC,
+#battery-level-group-boxD,
+#battery-level-group-boxE {
+    border-radius: 25px;
+}
+
+/* เพิ่มให้ layout ตรงกลางเมื่อหน้าจอขนาดเล็ก */
+@media only screen and (max-width: 768px) {
+    section {
+        grid-template-columns: 1fr;
+    }
+}
