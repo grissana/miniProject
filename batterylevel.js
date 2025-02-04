@@ -17,7 +17,7 @@ selectButton.addEventListener("click", async () => {
             return;
         }
 
-        await port.open({ baudRate: 9600 }); // เปิดพอร์ต
+        await port.open({ baudRate: 115200}); // เปิดพอร์ต
         keepReading = true;
         readSerialData(); // อ่านข้อมูล
 
@@ -30,6 +30,8 @@ selectButton.addEventListener("click", async () => {
 });
 
 // 🟡 2️⃣ อ่านค่าจากพอร์ตและแสดงผลใน alert
+let batteryLevels = {}; // ใช้เก็บค่าของแต่ละแบตเตอรี่
+
 async function readSerialData() {
     const decoder = new TextDecoderStream();
     port.readable.pipeTo(decoder.writable);
@@ -39,34 +41,141 @@ async function readSerialData() {
         while (keepReading) {
             const { value, done } = await reader.read();
             if (done) break;
-
-            // แสดงข้อมูลที่ได้รับใน Alert Popup
-            console.log("📡 ข้อมูลที่ได้รับ: " + value);
+            
+            let cleanValue = value.trim();
+            console.log("📡 ข้อมูลที่ได้รับ: " + cleanValue);
+            console.log("🔋 แบตเตอรี่ A:", batteryLevels["A"]);
+            console.log("🔋 แบตเตอรี่ B:", batteryLevels["B"]);
+            console.log("🔋 แบตเตอรี่ C:", batteryLevels["C"]);
+            console.log("🔋 แบตเตอรี่ D:", batteryLevels["D"]);
+            console.log("🔋 แบตเตอรี่ E:", batteryLevels["E"]);
 
             // ตรวจจับค่าที่ขึ้นต้นด้วย "A"
-            if (value.startsWith("A")) {
-                // นำค่าที่ได้รับไปแสดงใน element ที่มี id="battery-level-A"
-                document.getElementById("battery-level-A").textContent = value.substring(1); // ลบ "A" ออก
-            }else if (value.startsWith("B")) {
-                // นำค่าที่ได้รับไปแสดงใน element ที่มี id="battery-level-B"
-                document.getElementById("battery-level-B").textContent = value.substring(1); // ลบ "B" ออก
-            }else if (value.startsWith("C")) {
-                // นำค่าที่ได้รับไปแสดงใน element ที่มี id="battery-level-C"
-                document.getElementById("battery-level-C").textContent = value.substring(1); // ลบ "C" ออก
-            }else if (value.startsWith("D")) {
-                // นำค่าที่ได้รับไปแสดงใน element ที่มี id="battery-level-D"
-                document.getElementById("battery-level-D").textContent = value.substring(1); // ลบ "D" ออก
-            }else if (value.startsWith("E")) {
-                // นำค่าที่ได้รับไปแสดงใน element ที่มี id="battery-level-E"
-                document.getElementById("battery-level-E").textContent = value.substring(1); // ลบ "E" ออก
+            if (cleanValue.startsWith("A")) {
+                let number = cleanValue.substring(1); // ลบ "A-" ออก
+                batteryLevels["A"] = Number(number);
+                document.getElementById("battery-level-A").textContent = number;
+                if (Number(number) < 20) {
+                    console.log("⚠️ แบตเตอรี่ A ต่ำกว่า 20%!");
+                    document.getElementById("battery-level-group-boxA").style.background = "linear-gradient(180deg,rgb(255, 0, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                   // document.getElementById("mac-address-A").style.color = "white";
+                    
+                }else if (Number(number) > 20 && Number(number) < 50) {
+                    console.log("⚠️ แบตเตอรี่ A ต่ํากว่า 50%!");
+                    document.getElementById("battery-level-group-boxA").style.background  = "linear-gradient(180deg,rgb(255, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else if (Number(number) > 50) {
+                    console.log("⚠️ แบตเตอรี่ A ต่ํากว่า 100%!");
+                    document.getElementById("battery-level-group-boxA").style.background ="linear-gradient(180deg,rgb(38, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else{
+                    document.getElementById("battery-level-group-boxA").style.background ="white";
+                    document.getElementById("battery-level-group-boxA").style.color = "black";
+                    //document.getElementById("mac-address-A").style.color = "black";
+                }
+            } else if (cleanValue.startsWith("B")) {
+                let number = cleanValue.substring(1);
+                batteryLevels["B"] = Number(number);
+                document.getElementById("battery-level-B").textContent = number;
+                if (Number(number) < 20) {
+                    console.log("⚠️ แบตเตอรี่ B ต่ำกว่า 20%!");
+                    document.getElementById("battery-level-group-boxB").style.background = "linear-gradient(180deg,rgb(255, 0, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                   // document.getElementById("mac-address-A").style.color = "white";
+                    
+                }else if (Number(number) > 20 && Number(number) < 50) {
+                    console.log("⚠️ แบตเตอรี่ B ต่ํากว่า 50%!");
+                    document.getElementById("battery-level-group-boxB").style.background  = "linear-gradient(180deg,rgb(255, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else if (Number(number) > 50) {
+                    console.log("⚠️ แบตเตอรี่ B ต่ํากว่า 100%!");
+                    document.getElementById("battery-level-group-boxB").style.background ="linear-gradient(180deg,rgb(38, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else{
+                    document.getElementById("battery-level-group-boxB").style.background ="white";
+                    document.getElementById("battery-level-group-boxB").style.color = "black";
+                    //document.getElementById("mac-address-A").style.color = "black";
+                }
+            } else if (cleanValue.startsWith("C")) {
+                let number = cleanValue.substring(1);
+                batteryLevels["C"] = Number(number);
+                document.getElementById("battery-level-C").textContent = number;
+                if (Number(number) < 20) {
+                    console.log("⚠️ แบตเตอรี่ C ต่ำกว่า 20%!");
+                    document.getElementById("battery-level-group-boxC").style.background = "linear-gradient(180deg,rgb(255, 0, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                   // document.getElementById("mac-address-A").style.color = "white";
+                    
+                }else if (Number(number) > 20 && Number(number) < 50) {
+                    console.log("⚠️ แบตเตอรี่ C ต่ํากว่า 50%!");
+                    document.getElementById("battery-level-group-boxC").style.background  = "linear-gradient(180deg,rgb(255, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else if (Number(number) > 50) {
+                    console.log("⚠️ แบตเตอรี่ C ต่ํากว่า 100%!");
+                    document.getElementById("battery-level-group-boxC").style.background ="linear-gradient(180deg,rgb(38, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else{
+                    document.getElementById("battery-level-group-boxC").style.background ="white";
+                    document.getElementById("battery-level-group-boxC").style.color = "black";
+                    //document.getElementById("mac-address-A").style.color = "black";
+                }
+            } else if (cleanValue.startsWith("D")) {
+                let number = cleanValue.substring(1);
+                batteryLevels["D"] = Number(number);
+                document.getElementById("battery-level-D").textContent = number;
+                if (Number(number) < 20) {
+                    console.log("⚠️ แบตเตอรี่ D ต่ำกว่า 20%!");
+                    document.getElementById("battery-level-group-boxD").style.background = "linear-gradient(180deg,rgb(255, 0, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                   // document.getElementById("mac-address-A").style.color = "white";
+                    
+                }else if (Number(number) > 20 && Number(number) < 50) {
+                    console.log("⚠️ แบตเตอรี่ D ต่ํากว่า 50%!");
+                    document.getElementById("battery-level-group-boxD").style.background  = "linear-gradient(180deg,rgb(255, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else if (Number(number) > 50) {
+                    console.log("⚠️ แบตเตอรี่ D ต่ํากว่า 100%!");
+                    document.getElementById("battery-level-group-boxD").style.background ="linear-gradient(180deg,rgb(38, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else{
+                    document.getElementById("battery-level-group-boxD").style.background ="white";
+                    document.getElementById("battery-level-group-boxD").style.color = "black";
+                    //document.getElementById("mac-address-A").style.color = "black";
+                }
+            } else if (cleanValue.startsWith("E")) {
+                let number = cleanValue.substring(1);
+                batteryLevels["E"] = Number(number);
+                document.getElementById("battery-level-E").textContent = number;
+                if (Number(number) < 20) {
+                    console.log("⚠️ แบตเตอรี่ E ต่ำกว่า 20%!");
+                    document.getElementById("battery-level-group-boxE").style.background = "linear-gradient(180deg,rgb(255, 0, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                   // document.getElementById("mac-address-A").style.color = "white";
+                    
+                }else if (Number(number) > 20 && Number(number) < 50) {
+                    console.log("⚠️ แบตเตอรี่ E ต่ํากว่า 50%!");
+                    document.getElementById("battery-level-group-boxE").style.background  = "linear-gradient(180deg,rgb(255, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else if (Number(number) > 50) {
+                    console.log("⚠️ แบตเตอรี่ E ต่ํากว่า 100%!");
+                    document.getElementById("battery-level-group-boxE").style.background ="linear-gradient(180deg,rgb(38, 255, 0),rgb(255, 250, 250))";
+                    //document.getElementById("battery-level-group-boxA").style.color = "white";
+                }else{
+                    document.getElementById("battery-level-group-boxE").style.background ="white";
+                    document.getElementById("battery-level-group-boxE").style.color = "black";
+                    //document.getElementById("mac-address-A").style.color = "black";
+                }
             }
-            
         }
     } catch (error) {
         console.error("❌ เกิดข้อผิดพลาดในการอ่าน:", error);
         alert("❌ อ่านค่าล้มเหลว: " + error.message);
     }
 }
+
+
+
 
 // 🔴 3️⃣ ตัดการเชื่อมต่อพอร์ต
 disconnectButton.addEventListener("click", async () => {
