@@ -18,6 +18,20 @@
         <div class="header">
           <h1 style="text-align: center">Battery Level</h1>
           <p style="text-align: center">battery level demo</p>
+          <div id="box-menu">
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Set up</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Manual</a></li>
+            </ul>
+            <!-- เลือกพอร์ต -->
+            <h2>Connect</h2>
+            <div id="connect-port">
+              <button id="select-port">เลือกพอร์ต</button>
+              <button id="disconnect-port" disabled>ตัดการเชื่อมต่อ</button>
+            </div>
+          </div>
         </div>
       </header>
       <section class="content">
@@ -27,7 +41,7 @@
             <label>mac addrees :</label>
             <strong id="mac-address-A">xx:xx:xx:xx:xx:xx</strong><br />
             <label>Current battery level :</label>
-            <strong id="battery-level-A">100</strong>
+            <strong id="battery-level-A">0</strong>
             <label>%</label>
           </div>
         </div>
@@ -38,7 +52,7 @@
             <label>mac addrees :</label>
             <strong id="mac-address-B">xx:xx:xx:xx:xx:xx</strong><br />
             <label>Current battery level :</label>
-            <strong id="battery-level-B">100</strong>
+            <strong id="battery-level-B">0</strong>
             <label>%</label>
           </div>
         </div>
@@ -48,7 +62,7 @@
             <label>mac addrees :</label>
             <strong id="mac-address-C">xx:xx:xx:xx:xx:xx</strong><br />
             <label>Current battery level :</label>
-            <strong id="battery-level-C">100</strong>
+            <strong id="battery-level-C">0</strong>
             <label>%</label>
           </div>
         </div>
@@ -58,7 +72,7 @@
             <label>mac addrees :</label>
             <strong id="mac-address-D">xx:xx:xx:xx:xx:xx</strong><br />
             <label>Current battery level :</label>
-            <strong id="battery-level-D">100</strong>
+            <strong id="battery-level-D">0</strong>
             <label>%</label>
           </div>
         </div>
@@ -68,15 +82,16 @@
             <label>mac addrees :</label>
             <strong id="mac-address-E">xx:xx:xx:xx:xx:xx</strong><br />
             <label>Current battery level :</label>
-            <strong id="battery-level-E">100</strong>
+            <strong id="battery-level-E">0</strong>
             <label>%</label>
           </div>
         </div>
       </section>
       <br /><br /><br />
-      <footer>
+      <!-- <footer>
         <p>© 2021 Battery Level</p>
-      </footer>
+      </footer> -->
     </div>
+    <script src="./batterylevel.js"></script>
   </body>
 </html>
