@@ -9,12 +9,11 @@ typedef struct Message {
 
 Message receivedData;
 
-const unsigned long timeout = 3000;                       // 3 วินาที
-unsigned long lastReceiveTime[6] = { 0, 0, 0, 0, 0, 0 };  // เก็บเวลาล่าสุดของ A-F
-char deviceIDs[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };     // รายชื่ออุปกรณ์ A-F
-
-unsigned long lastDisplayTime = 0;  // เวลาสุดท้ายที่แสดงข้อมูล
-const unsigned long displayInterval = 300; // ระยะเวลาที่จะแสดงข้อมูลใหม่
+const unsigned long timeout = 3000;  // 3 วินาที
+unsigned long lastReceiveTime[6];    // เก็บเวลาล่าสุดของ A-F
+bool isLost[6] = { false, false, false, false, false, false };  // บันทึกว่าตัวไหนเคยหายไปแล้ว
+bool isFirstReceive[6] = { false, false, false, false, false, false }; // เช็คว่าอุปกรณ์เคยส่งข้อมูลแล้วหรือยัง
+char deviceIDs[6] = { 'A', 'B', 'C', 'D', 'E', 'F' };  // รายชื่ออุปกรณ์ A-F
 
 // ฟังก์ชัน callback เมื่อได้รับข้อมูล
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, int len) {
@@ -24,6 +23,8 @@ void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, in
   for (int i = 0; i < 6; i++) {
     if (receivedData.messagedata == deviceIDs[i]) {
       lastReceiveTime[i] = millis();  // อัปเดตเวลาล่าสุด
+      isLost[i] = false;  // รีเซ็ตสถานะ ถ้าได้รับข้อมูลใหม่
+      isFirstReceive[i] = true;  // บันทึกว่าเคยได้รับข้อมูลแล้ว
       break;
     }
   }
@@ -32,13 +33,18 @@ void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *incomingData, in
   Serial.print("\t");
   Serial.print(receivedData.messagedata);
   Serial.println(receivedData.percen);
-  // Serial.println(receivedData.voltage, 2);
 }
 
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  delay(5000);
+  delay(2000);
+
+  // ตั้งค่าเริ่มต้นของ lastReceiveTime เป็นเวลาปัจจุบัน
+  for (int i = 0; i < 6; i++) {
+    lastReceiveTime[i] = millis();
+  }
+
   if (esp_now_init() != ESP_OK) {
     Serial.println("ESP-NOW Init Failed");
     return;
@@ -50,20 +56,17 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  // วนลูปตรวจสอบว่าเวลาผ่านไปนานกว่าหรือเท่ากับ timeout
   for (int i = 0; i < 6; i++) {
-    if (currentMillis - lastReceiveTime[i] > timeout) {
-      // แสดงค่าที่ไม่มีข้อมูล
-      if (currentMillis - lastDisplayTime >= displayInterval) {
-        lastDisplayTime = currentMillis; // อัปเดตเวลาที่แสดงผล
-        Serial.print("\t");
-        Serial.print(deviceIDs[i]);
-        Serial.println("0");              // ถ้าไม่มีข้อมูลให้แสดงค่า 0
-        //Serial.println("------------------------");
-      }
+    // แสดง 0 เฉพาะถ้าเคยเชื่อมต่อแล้วและขาดการเชื่อมต่อ
+    if (isFirstReceive[i] && !isLost[i] && (currentMillis - lastReceiveTime[i] > timeout)) {
+      Serial.print("\t");
+      Serial.print(deviceIDs[i]);
+      Serial.println(" 0");  // แสดงค่า 0 ครั้งเดียวเมื่อขาดการเชื่อมต่อ
+      //Serial.println("------------------------");
+
+      isLost[i] = true;  // บันทึกว่าเคยแสดงค่า 0 ไปแล้ว
     }
   }
 
-  // คำสั่งหน่วงเวลาน้อยๆ เพื่อให้ loop ทำงานได้ดีขึ้น
-  delay(10);  // รอเวลาสั้นๆ เพื่อให้แน่ใจว่า loop ทำงานได้ดี
+  //delay(10);  // ลดภาระ CPU
 }

@@ -3,7 +3,12 @@
 
 #define BATTERY_PIN 0  // ใช้ ADC34 อ่านแรงดันแบตเตอรี่ (หากใช้ ESP32)
 
-uint8_t receiverMac[] = { 0x8C, 0x4B, 0x14, 0x09, 0x29, 0xC4 };  // MAC ของตัวรับ
+
+// กำหนดช่วงแรงดันที่ต้องการให้เป็นเปอร์เซ็นต์
+const float minADC = 2047.5;     // ค่าที่อ่านได้เมื่อแบตเตอรี่อ่อนสุด
+const float maxADC = 3439.8;  // ค่าที่อ่านได้เมื่อแบตเตอรี่เต็ม
+
+uint8_t receiverMac[] = { 0x8C, 0x4B, 0x14, 0x09, 0x29, 0xC4 };  // MAC ของตัวรับ 0x8C, 0x4B, 0x14, 0x09, 0x29, 0xC4 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 // โครงสร้างข้อมูลที่ส่ง
 typedef struct Message {
@@ -45,11 +50,15 @@ void setup() {
 }
 
 void loop() {
-  int rawValue = analogRead(BATTERY_PIN);
-  float voltage = (rawValue / 4095.0) * 3.3 * 2;  // คำนวณแรงดันจริง
+  int rawValue = analogRead(BATTERY_PIN);  // อ่านค่าจากขา A0
+  //Serial.println(rawValue);
+  //float voltage = rawValue * (5.0 / 4095);  // คำนวณแรงดัน (V)
+  float voltage = (rawValue / 4095.0) * 2.6 * 2;  // คำนวณแรงดันจริง
+    // คำนวณเปอร์เซ็นต์แบตเตอรี่
+  int percen = map(rawValue, minADC, maxADC, 0, 100);
 
-  // ปรับช่วงแรงดันแบตเตอรี่ (1.0V - 3.6V) เป็นเปอร์เซ็นต์
-  float percen = (voltage - 1.0) / (3.6 - 1.0) * 100.0;
+  // ปรับช่วงแรงดันแบตเตอรี่ (2.5V - 4.2V) เป็นเปอร์เซ็นต์
+  // float percen = map(rawValue, 2048, 3440, 0, 100);
 
   // จำกัดค่าเปอร์เซ็นต์ให้อยู่ในช่วง 0-100%
   percen = constrain(percen, 0.0, 100.0);
@@ -63,7 +72,7 @@ void loop() {
 
   // กำหนดข้อมูลที่ต้องการส่ง
   dataToSend.voltage = voltage;
-  dataToSend.messagedata = 'A';  // ใช้อักษรตัวเดียว (char)
+  dataToSend.messagedata = 'A';   // ใช้อักษรตัวเดียว (char)
   dataToSend.percen = percenInt;  // ส่งค่าเปอร์เซ็นต์แบตเตอรี่
 
   esp_err_t result = esp_now_send(receiverMac, (uint8_t *)&dataToSend, sizeof(dataToSend));
