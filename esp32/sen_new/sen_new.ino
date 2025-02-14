@@ -5,8 +5,8 @@
 
 
 // กำหนดช่วงแรงดันที่ต้องการให้เป็นเปอร์เซ็นต์
-const float minADC = 2047.5;     // ค่าที่อ่านได้เมื่อแบตเตอรี่อ่อนสุด
-const float maxADC = 3439.8;  // ค่าที่อ่านได้เมื่อแบตเตอรี่เต็ม
+const float minADC = 2047.0;     // ค่าที่อ่านได้เมื่อแบตเตอรี่อ่อนสุด 2.5v = 2047
+const float maxADC = 2950;  // ค่าที่อ่านได้เมื่อแบตเตอรี่เต็ม 3439.8 = 4.2v / 2950 = 3.6v
 
 uint8_t receiverMac[] = { 0x8C, 0x4B, 0x14, 0x09, 0x29, 0xC4 };  // MAC ของตัวรับ 0x8C, 0x4B, 0x14, 0x09, 0x29, 0xC4 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
@@ -72,7 +72,7 @@ void loop() {
 
   // กำหนดข้อมูลที่ต้องการส่ง
   dataToSend.voltage = voltage;
-  dataToSend.messagedata = 'A';   // ใช้อักษรตัวเดียว (char)
+  dataToSend.messagedata = 'C';   // ใช้อักษรตัวเดียว (char) 0.4 0.6 0.8 1.5 2.0
   dataToSend.percen = percenInt;  // ส่งค่าเปอร์เซ็นต์แบตเตอรี่
 
   esp_err_t result = esp_now_send(receiverMac, (uint8_t *)&dataToSend, sizeof(dataToSend));

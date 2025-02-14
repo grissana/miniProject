@@ -6,7 +6,7 @@
 }
 
 body {
-    background: linear-gradient(140deg, #6846ff, #ef88ff);
+    /* background: linear-gradient(60deg, #ffffff, #c53e3e); */
     color: #000000;
     font-size: 16px;
     display: flex;
@@ -136,48 +136,103 @@ h2 {
     margin-bottom: 30px;
 }
 
+#Torque {
+    text-align: center;
+    font-size: 40px;
+    color: #ffffff; /* สีเขียวอ่อน */
+    font-weight: bold;
+    border-bottom: 2px solid #ff0000; /* ขีดเส้นใต้สีเขียว */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1.6);
+}
+
 #mac-address-A, #mac-address-B, #mac-address-C, #mac-address-D, #mac-address-E {
     font-size: 30px;
     color: #000000; /* สีฟ้า Cyan */
     font-family: 'Courier New', Courier, monospace;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1.6);
 }
 
 /* เปลี่ยนสี Battery Level ตามระดับแบตเตอรี่ */
 #battery-level-A, #battery-level-B, #battery-level-C, #battery-level-D, #battery-level-E {
-    /* border: 1px solid red; */
     display: flex;
     height: 50px;
-    font-size: 60px;
+    font-size: 90px;
     font-family: 'Courier New', Courier, monospace;
     transition: color 0.3s ease;
     flex-direction: row;
     justify-content: center;
     align-content: center;
     align-items: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1.6);
 }
 
 label {
     padding: 5px;
-    font-size: 20px;
-    color: #000000; /* สีเทาฟ้า */
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff; /* สีเทาฟ้า */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
-#battery-level-group-boxA,
-#battery-level-group-boxB,
-#battery-level-group-boxC,
-#battery-level-group-boxD,
-#battery-level-group-boxE {
+#battery-level-group-boxA{
     height: 300px;
     display: flex;
     text-align: center;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #ffffff, #ffffff); /* โทนสีเทาดำ */
+    background: linear-gradient(135deg, #a1a1a1, #ffffff);
     box-shadow: 0 5px 20px rgba(48, 48, 48, 0.6);
     border-radius: 20px;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
     cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+}
+#battery-level-group-boxB{
+    height: 300px;
+    display: flex;
+    text-align: center;
+    background: linear-gradient(135deg, #fffb00, #fffc67);
+    box-shadow: 0 5px 20px rgba(48, 48, 48, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+}
+#battery-level-group-boxC{
+    height: 300px;
+    display: flex;
+    text-align: center;
+    background: linear-gradient(135deg, #0000ff, #8a8aff);
+    box-shadow: 0 5px 20px rgba(48, 48, 48, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+}
+#battery-level-group-boxD{
+    height: 300px;
+    display: flex;
+    text-align: center;
+    background: linear-gradient(135deg, #000000, #494949);
+    box-shadow: 0 5px 20px rgba(48, 48, 48, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+}
+#battery-level-group-boxE {
+    height: 300px;
+    display: flex;
+    text-align: center;
+    background: linear-gradient(135deg, #ff0000, #fc6161);
+    box-shadow: 0 5px 20px rgba(48, 48, 48, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #battery-level-group-boxA:hover,
@@ -185,9 +240,24 @@ label {
 #battery-level-group-boxC:hover,
 #battery-level-group-boxD:hover,
 #battery-level-group-boxE:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow:0 10px 20px rgb(255, 255, 255);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+#battery-level-group-boxA-2,
+#battery-level-group-boxB-2,
+#battery-level-group-boxC-2,
+#battery-level-group-boxD-2,
+#battery-level-group-boxE-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
 }
 
 #box-menu {
@@ -227,4 +297,16 @@ footer a:hover {
     section {
         grid-template-columns:1fr;
     }
+    /* ปิด class header */
+    .header {
+        display: none;
+    }
+
+    #battery-level-group-boxA,
+    #battery-level-group-boxB,
+    #battery-level-group-boxC,
+    #battery-level-group-boxD,
+    #battery-level-group-boxE {
+        height: 190px;
+}
 }
